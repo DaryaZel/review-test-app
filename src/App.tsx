@@ -1,9 +1,11 @@
+import { useState } from 'react'
 import { FilterBar } from './components/FilterBar'
 import { TaskForm } from './components/TaskForm'
 import { TaskList } from './components/TaskList'
 import { useTasks } from './hooks/useTasks'
 
 function App() {
+  const [query, setQuery] = useState('')
   const {
     filteredTasks,
     filter,
@@ -18,8 +20,20 @@ function App() {
     <main className="app">
       <h1>Tasks</h1>
       <TaskForm onAdd={addTask} />
+      <input
+        type="search"
+        className="search-input"
+        placeholder="Search tasks..."
+        value={query}
+        onChange={(event) => setQuery(event.target.value)}
+      />
       <FilterBar filter={filter} activeCount={activeCount} onChange={setFilter} />
-      <TaskList tasks={filteredTasks} onToggle={toggleTask} onDelete={deleteTask} />
+      <TaskList
+        tasks={filteredTasks}
+        query={query}
+        onToggle={toggleTask}
+        onDelete={deleteTask}
+      />
     </main>
   )
 }
