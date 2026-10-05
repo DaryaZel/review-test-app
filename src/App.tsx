@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { FilterBar } from './components/FilterBar'
+import { SuggestedTasks } from './components/SuggestedTasks'
 import { TaskForm } from './components/TaskForm'
 import { TaskList } from './components/TaskList'
 import { useTasks } from './hooks/useTasks'
@@ -34,6 +35,7 @@ function App() {
         onToggle={toggleTask}
         onDelete={deleteTask}
       />
+      <SuggestedTasks onAdd={(title) => addTask(title)} />
     </main>
   )
 }
