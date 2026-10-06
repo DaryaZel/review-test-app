@@ -25,6 +25,7 @@ function App() {
         type="search"
         className="search-input"
         placeholder="Search tasks..."
+        aria-label="Search tasks"
         value={query}
         onChange={(event) => setQuery(event.target.value)}
       />
