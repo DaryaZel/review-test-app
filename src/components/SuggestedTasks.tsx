@@ -19,13 +19,25 @@ export const SuggestedTasks = memo(function SuggestedTasks({
   const [page, setPage] = useState(1)
 
   useEffect(() => {
-    fetch(`${SUGGESTIONS_URL}?completed=false&_page=${page}&_limit=${PAGE_SIZE}`)
-      .then((response) => response.json())
+    const controller = new AbortController()
+
+    fetch(`${SUGGESTIONS_URL}?completed=false&_page=${page}&_limit=${PAGE_SIZE}`, {
+      signal: controller.signal,
+    })
+      .then((response) => {
+        if (!response.ok) throw new Error(`HTTP ${response.status}`)
+        return response.json()
+      })
       .then((data: Suggestion[]) => {
         setSuggestions(
           data.map((item) => ({ id: item.id, title: item.title })),
         )
       })
+      .catch(() => {
+        if (!controller.signal.aborted) setSuggestions([])
+      })
+
+    return () => controller.abort()
   }, [page])
 
   const handleAdd = (index: number) => {
