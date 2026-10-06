@@ -6,14 +6,11 @@ const STORAGE_KEY = 'tasks'
 function loadTasks(): Task[] {
   try {
     const raw = localStorage.getItem(STORAGE_KEY)
-    return raw ? JSON.parse(raw) : []
+    const parsed: unknown = raw ? JSON.parse(raw) : []
+    return Array.isArray(parsed) ? parsed : []
   } catch {
     return []
   }
-}
-
-export function clearStoredTasks() {
-  localStorage.removeItem(STORAGE_KEY)
 }
 
 export function useTasks() {
