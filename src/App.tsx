@@ -25,6 +25,7 @@ function App() {
         type="search"
         className="search-input"
         placeholder="Search tasks..."
+        aria-label="Search tasks"
         value={query}
         onChange={(event) => setQuery(event.target.value)}
       />
@@ -35,7 +36,7 @@ function App() {
         onToggle={toggleTask}
         onDelete={deleteTask}
       />
-      <SuggestedTasks onAdd={(title) => addTask(title)} />
+      <SuggestedTasks onAdd={addTask} />
     </main>
   )
 }

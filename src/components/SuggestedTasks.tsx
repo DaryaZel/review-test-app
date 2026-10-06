@@ -56,9 +56,13 @@ export const SuggestedTasks = memo(function SuggestedTasks({
       <ul className="task-list">
         {suggestions.map((suggestion) => (
           <li key={suggestion.id} className="task-item">
-            <div className="task-title" onClick={() => handleAdd(suggestion)}>
+            <button
+              type="button"
+              className="task-title suggestion-button"
+              onClick={() => handleAdd(suggestion)}
+            >
               + {suggestion.title}
-            </div>
+            </button>
           </li>
         ))}
       </ul>

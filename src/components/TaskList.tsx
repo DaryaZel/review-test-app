@@ -24,7 +24,9 @@ export function TaskList({ tasks, query, onToggle, onDelete }: TaskListProps) {
   if (visibleTasks.length === 0) {
     return (
       <p className="empty-state">
-        {query ? `No tasks match "${query}".` : 'No tasks to show.'}
+        {searchTerms.length > 0
+          ? `No tasks match "${query.trim()}".`
+          : 'No tasks to show.'}
       </p>
     )
   }

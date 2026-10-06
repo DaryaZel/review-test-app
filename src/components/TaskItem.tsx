@@ -9,9 +9,14 @@ interface TaskItemProps {
 }
 
 function highlightMatches(text: string, query: string) {
-  if (!query) return text
-  const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-  return text.replace(new RegExp(`(${escaped})`, 'gi'), '<mark>$1</mark>')
+  const terms = query.split(/\s+/).filter(Boolean)
+  if (terms.length === 0) return text
+
+  const escaped = terms.map((term) => term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
+  const parts = text.split(new RegExp(`(${escaped.join('|')})`, 'gi'))
+  return parts.map((part, index) =>
+    index % 2 === 1 ? <mark key={index}>{part}</mark> : part,
+  )
 }
 
 export const TaskItem = memo(function TaskItem({
@@ -30,11 +35,9 @@ export const TaskItem = memo(function TaskItem({
         checked={task.completed}
         onChange={() => onToggle(task.id)}
       />
-      <label
-        htmlFor={checkboxId}
-        className="task-title"
-        dangerouslySetInnerHTML={{ __html: highlightMatches(task.title, query) }}
-      />
+      <label htmlFor={checkboxId} className="task-title">
+        {highlightMatches(task.title, query)}
+      </label>
       <button
         type="button"
         className="delete-button"
