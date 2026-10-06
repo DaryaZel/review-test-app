@@ -40,9 +40,9 @@ export const SuggestedTasks = memo(function SuggestedTasks({
     return () => controller.abort()
   }, [page])
 
-  const handleAdd = (index: number) => {
-    onAdd(suggestions[index].title)
-    setSuggestions((prev) => prev.filter((_, i) => i !== index))
+  const handleAdd = (suggestion: Suggestion) => {
+    onAdd(suggestion.title)
+    setSuggestions((prev) => prev.filter((item) => item.id !== suggestion.id))
   }
 
   return (
@@ -54,9 +54,9 @@ export const SuggestedTasks = memo(function SuggestedTasks({
         </button>
       </div>
       <ul className="task-list">
-        {suggestions.map((suggestion, index) => (
+        {suggestions.map((suggestion) => (
           <li key={suggestion.id} className="task-item">
-            <div className="task-title" onClick={() => handleAdd(index)}>
+            <div className="task-title" onClick={() => handleAdd(suggestion)}>
               + {suggestion.title}
             </div>
           </li>
