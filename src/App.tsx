@@ -35,7 +35,7 @@ function App() {
         onToggle={toggleTask}
         onDelete={deleteTask}
       />
-      <SuggestedTasks onAdd={(title) => addTask(title)} />
+      <SuggestedTasks onAdd={addTask} />
     </main>
   )
 }
