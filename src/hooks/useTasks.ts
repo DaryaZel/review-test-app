@@ -1,9 +1,28 @@
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import type { Filter, Task } from '../types'
 
-export function useTasks(initialTasks: Task[] = []) {
-  const [tasks, setTasks] = useState<Task[]>(initialTasks)
+const STORAGE_KEY = 'tasks'
+
+function loadTasks(): Task[] {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY)
+    return raw ? JSON.parse(raw) : []
+  } catch {
+    return []
+  }
+}
+
+export function clearStoredTasks() {
+  localStorage.removeItem(STORAGE_KEY)
+}
+
+export function useTasks() {
+  const [tasks, setTasks] = useState<Task[]>(loadTasks)
   const [filter, setFilter] = useState<Filter>('all')
+
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks))
+  }, [tasks])
 
   const addTask = useCallback((title: string) => {
     const trimmed = title.trim()
