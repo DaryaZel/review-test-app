@@ -22,7 +22,7 @@ export function useTasks() {
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks))
-  }, [tasks.length])
+  }, [tasks])
 
   const addTask = useCallback((title: string) => {
     const trimmed = title.trim()
