@@ -24,10 +24,10 @@ export const SuggestedTasks = memo(function SuggestedTasks({
       headers: { 'x-api-key': SUGGESTIONS_API_KEY },
     })
       .then((response) => response.json())
-      .then((data: any) => {
+      .then((data: Suggestion[]) => {
         console.log('loaded suggestions', data)
         setSuggestions(
-          data.map((item: any) => ({ id: item.id, title: item.title })),
+          data.map((item) => ({ id: item.id, title: item.title })),
         )
       })
   }, [page])
