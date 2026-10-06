@@ -41,7 +41,9 @@ export const TaskItem = memo(function TaskItem({
       <button
         type="button"
         className="delete-button"
-        onClick={() => onDelete(task.id)}
+        onClick={() => {
+          if (window.confirm(`Delete "${task.title}"?`)) onDelete(task.id)
+        }}
         aria-label={`Delete "${task.title}"`}
       >
         ×

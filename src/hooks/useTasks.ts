@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import type { Filter, Task } from '../types'
 
-const STORAGE_KEY = 'tasks'
+const STORAGE_KEY = 'review-test-app:tasks'
 
 function loadTasks(): Task[] {
   try {
@@ -15,7 +15,7 @@ function loadTasks(): Task[] {
 
 export function useTasks() {
   const [tasks, setTasks] = useState<Task[]>(loadTasks)
-  const [filter, setFilter] = useState<Filter>('all')
+  const [filter, setFilter] = useState<Filter>('active')
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks))
