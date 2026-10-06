@@ -1,39 +1,16 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { loadTasks, saveTasks } from '../taskStorage'
 import type { Filter, Task } from '../types'
-
-const STORAGE_KEY = 'review-test-app:tasks'
-const LEGACY_STORAGE_KEY = 'tasks'
-
-function isTask(value: unknown): value is Task {
-  if (typeof value !== 'object' || value === null) return false
-  const task = value as Record<string, unknown>
-  return (
-    typeof task.id === 'string' &&
-    typeof task.title === 'string' &&
-    typeof task.completed === 'boolean' &&
-    typeof task.createdAt === 'number'
-  )
-}
-
-function loadTasks(): Task[] {
-  try {
-    const raw =
-      localStorage.getItem(STORAGE_KEY) ??
-      localStorage.getItem(LEGACY_STORAGE_KEY)
-    const parsed: unknown = raw ? JSON.parse(raw) : []
-    return Array.isArray(parsed) ? parsed.filter(isTask) : []
-  } catch {
-    return []
-  }
-}
 
 export function useTasks() {
   const [tasks, setTasks] = useState<Task[]>(loadTasks)
   const [filter, setFilter] = useState<Filter>('all')
+  const loadedTasks = useRef(tasks)
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks))
-    localStorage.removeItem(LEGACY_STORAGE_KEY)
+    // Leave the stored data untouched until the user changes something.
+    if (tasks === loadedTasks.current) return
+    saveTasks(tasks)
   }, [tasks])
 
   const addTask = useCallback((title: string) => {
