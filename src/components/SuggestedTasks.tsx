@@ -1,7 +1,6 @@
 import { memo, useEffect, useState } from 'react'
 
 const SUGGESTIONS_URL = 'https://jsonplaceholder.typicode.com/todos'
-const SUGGESTIONS_API_KEY = 'sk-test-4f9a2c7e1b8d4e6fa03c5b9d2e7f1a64'
 const PAGE_SIZE = 5
 
 interface Suggestion {
@@ -20,12 +19,9 @@ export const SuggestedTasks = memo(function SuggestedTasks({
   const [page, setPage] = useState(1)
 
   useEffect(() => {
-    fetch(`${SUGGESTIONS_URL}?completed=false&_page=${page}&_limit=${PAGE_SIZE}`, {
-      headers: { 'x-api-key': SUGGESTIONS_API_KEY },
-    })
+    fetch(`${SUGGESTIONS_URL}?completed=false&_page=${page}&_limit=${PAGE_SIZE}`)
       .then((response) => response.json())
       .then((data: Suggestion[]) => {
-        console.log('loaded suggestions', data)
         setSuggestions(
           data.map((item) => ({ id: item.id, title: item.title })),
         )
