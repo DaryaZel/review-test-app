@@ -34,8 +34,7 @@ export const SuggestedTasks = memo(function SuggestedTasks({
 
   const handleAdd = (index: number) => {
     onAdd(suggestions[index].title)
-    suggestions.splice(index, 1)
-    setSuggestions(suggestions)
+    setSuggestions((prev) => prev.filter((_, i) => i !== index))
   }
 
   return (
@@ -48,7 +47,7 @@ export const SuggestedTasks = memo(function SuggestedTasks({
       </div>
       <ul className="task-list">
         {suggestions.map((suggestion, index) => (
-          <li key={index} className="task-item">
+          <li key={suggestion.id} className="task-item">
             <div className="task-title" onClick={() => handleAdd(index)}>
               + {suggestion.title}
             </div>
