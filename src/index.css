@@ -119,6 +119,14 @@ button:disabled {
   flex: 1;
 }
 
+.suggestion-button {
+  padding: 0;
+  color: inherit;
+  text-align: left;
+  background: transparent;
+  border: none;
+}
+
 .task-item.completed .task-title {
   color: var(--muted);
   text-decoration: line-through;
