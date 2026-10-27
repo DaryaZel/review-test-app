@@ -17,9 +17,11 @@ export const SuggestedTasks = memo(function SuggestedTasks({
 }: SuggestedTasksProps) {
   const [suggestions, setSuggestions] = useState<Suggestion[]>([])
   const [page, setPage] = useState(1)
+  const [failed, setFailed] = useState(false)
 
   useEffect(() => {
     const controller = new AbortController()
+    setFailed(false)
 
     fetch(`${SUGGESTIONS_URL}?completed=false&_page=${page}&_limit=${PAGE_SIZE}`, {
       signal: controller.signal,
@@ -34,7 +36,9 @@ export const SuggestedTasks = memo(function SuggestedTasks({
         )
       })
       .catch(() => {
-        if (!controller.signal.aborted) setSuggestions([])
+        if (controller.signal.aborted) return
+        setSuggestions([])
+        setFailed(true)
       })
 
     return () => controller.abort()
@@ -53,6 +57,7 @@ export const SuggestedTasks = memo(function SuggestedTasks({
           More ideas
         </button>
       </div>
+      {failed && <p>Could not load suggestions. Try again.</p>}
       <ul className="task-list">
         {suggestions.map((suggestion) => (
           <li key={suggestion.id} className="task-item">
