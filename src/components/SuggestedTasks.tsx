@@ -1,7 +1,7 @@
 import { memo, useEffect, useState } from 'react'
 
 const SUGGESTIONS_URL = 'https://jsonplaceholder.typicode.com/todos'
-const PAGE_SIZE = 5
+const PAGE_SIZE = 10
 
 interface Suggestion {
   id: number

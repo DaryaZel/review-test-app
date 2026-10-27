@@ -1,27 +1,16 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { loadTasks, saveTasks } from '../taskStorage'
 import type { Filter, Task } from '../types'
-
-const STORAGE_KEY = 'tasks'
-
-function loadTasks(): Task[] {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY)
-    return raw ? JSON.parse(raw) : []
-  } catch {
-    return []
-  }
-}
-
-export function clearStoredTasks() {
-  localStorage.removeItem(STORAGE_KEY)
-}
 
 export function useTasks() {
   const [tasks, setTasks] = useState<Task[]>(loadTasks)
   const [filter, setFilter] = useState<Filter>('all')
+  const loadedTasks = useRef(tasks)
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks))
+    // Leave the stored data untouched until the user changes something.
+    if (tasks === loadedTasks.current) return
+    saveTasks(tasks)
   }, [tasks])
 
   const addTask = useCallback((title: string) => {
